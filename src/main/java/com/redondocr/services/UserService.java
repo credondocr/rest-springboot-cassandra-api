@@ -42,4 +42,9 @@ public class UserService {
         userRepository.delete(id);
     }
 
+    public boolean exitsUser(String userId){
+        MapId id = id("userid", userId);
+        return userRepository.exists(id);
+    }
+
 }

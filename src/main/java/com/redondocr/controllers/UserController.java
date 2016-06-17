@@ -32,6 +32,9 @@ public class UserController {
 
     @RequestMapping( path = "/{id}", method = RequestMethod.GET, produces = "application/json" )
     public ResponseEntity<User> getUserById(@PathVariable String id){
+        if(!service.exitsUser(id)){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         User user = service.findUserById(id);
         return new ResponseEntity(user,HttpStatus.ACCEPTED);
     }
@@ -44,6 +47,9 @@ public class UserController {
 
     @RequestMapping(path = "/{id}",method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable String id){
+        if(!service.exitsUser(id)){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         User user = service.findUserById(id);
         service.deleteUser(id);
         return new ResponseEntity(user, HttpStatus.ACCEPTED);
