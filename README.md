@@ -1,4 +1,4 @@
-# rest-springboot-cassandra-api
+# Rest Springboot API with cassandra 
 
 ##Cassandra docker image##
 
