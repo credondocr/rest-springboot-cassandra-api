@@ -41,8 +41,11 @@ public class UserController {
 
     @RequestMapping(  method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public ResponseEntity<User> editUser(@RequestBody User user){
-        User user1 = service.editUser(user);
-        return new ResponseEntity(user1, HttpStatus.ACCEPTED);
+        if(user.getUserid() == null || !service.exitsUser(user.getUserid())){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        User userEdited = service.editUser(user);
+        return new ResponseEntity(userEdited, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(path = "/{id}",method = RequestMethod.DELETE)
