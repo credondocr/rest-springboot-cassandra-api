@@ -3,8 +3,9 @@ package com.redondocr.controllers;
 import com.redondocr.domain.User;
 import com.redondocr.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /**
@@ -18,31 +19,34 @@ public class UserController {
     private UserService service;
 
     @RequestMapping( method = RequestMethod.GET, produces = "application/json" )
-    public List<User> getUsers(){
-        return service.getUsers();
+    public ResponseEntity<List<User>> getUsers(){
+        return new ResponseEntity(service.getUsers(), HttpStatus.OK);
     }
 
 
     @RequestMapping( method = RequestMethod.POST, produces = "application/json", consumes = "application/json" )
-    public User addUser(@RequestBody User user){
-        return service.createUser(user);
+    public ResponseEntity<User> addUser(@RequestBody User user){
+        User userCreated = service.createUser(user);
+        return new ResponseEntity(userCreated, HttpStatus.CREATED);
     }
 
     @RequestMapping( path = "/{id}", method = RequestMethod.GET, produces = "application/json" )
-    public User getUserById(@PathVariable String id){
-        return service.findUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable String id){
+        User user = service.findUserById(id);
+        return new ResponseEntity(user,HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(  method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-    public User editUser(@RequestBody User user){
-        return service.editUser(user);
+    public ResponseEntity<User> editUser(@RequestBody User user){
+        User user1 = service.editUser(user);
+        return new ResponseEntity(user1, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(path = "/{id}",method = RequestMethod.DELETE)
-    public User deleteUser(@PathVariable String id){
-        User user = getUserById(id);
+    public ResponseEntity<User> deleteUser(@PathVariable String id){
+        User user = service.findUserById(id);
         service.deleteUser(id);
-        return user;
+        return new ResponseEntity(user, HttpStatus.ACCEPTED);
 
     }
 
